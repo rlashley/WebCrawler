@@ -1,2 +1,2 @@
-# WebCrawler
-WebCrawler for pulling data from webpages
+# WebSpider
+WebSpider for pulling simple data from webpages
