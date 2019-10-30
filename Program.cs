@@ -96,21 +96,14 @@ namespace WebCrawler
             StreamWriter outputFile2 = new StreamWriter(Path.Combine(filePath, newFile));
 
             Dictionary<string, int> words = new Dictionary<string, int>();
-            String[] wordArray = webpageData.Split(" ");  //create list of words based on spaces between. Future parser could improve on this looking for other delimiting characters.
+            String[] wordArray = webpageData.Split(" ");  //create list of words based on spaces between.
             for (int i=0;i<wordArray.Length;i++) //cycle through words adding them to dictionary
             {
-                //Call data parser method, to be built at later time
-                //Parse out anything not full of letters
-
-
-                wordArray[i] = wordArray[i].Trim();
-                //if word is longer than 15 letters
-                if (wordArray[i].Length > 15)
+                //Parse and clear out any non useful words
+                wordArray[i] = wordArrayCleaner(wordArray[i]);
+                if (word.Equals(""))
                     continue;
-                //if word is "" or has a number, ignore
-                if (wordArray[i].Any(char.IsDigit) || wordArray[i].Equals(""))
-                    continue;
-
+                
                 if (!words.ContainsKey(wordArray[i]))
                     words.Add(wordArray[i], 1);
                 else {
@@ -127,9 +120,17 @@ namespace WebCrawler
             outputFile2.Close();
         }
 
-        /**
-        *  Build method here, call it data cleaner method, takes all webpage data and cleans it before feeding into dictionary
-        */
-
+        // data cleaner method, takes all webpage data and cleans it before feeding into dictionary
+        private string wordArrayCleaner(string word){
+            word = word.Trim();
+            //if word is longer than 15 letters or too small
+            if(word.Length > 15 || word.Length < 2)
+                word = "";
+            //if word has any non letter characters, delete
+            if (word.Any(!char.IsLetter))
+                word = "";
+            
+            return word;
+        }
     }
 }
